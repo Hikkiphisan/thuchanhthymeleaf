@@ -1,42 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of Customers</title>
-    <!-- Thêm CSS nếu cần -->
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .notify {
-            color: green;
-            font-weight: bold;
-        }
-    </style>
+<head th:replace="/layout :: head">
+    <title>ListCustomer</title>
 </head>
 <body>
-<h3>Customer List</h3>
+<h3>Customers</h3>
 <p>
-    <a th:href="@{/customers/create}">Add New Customer</a>
+    <a th:href="@{/customers/create}">
+        Add new customer
+    </a>
 </p>
 
-<!-- Thông báo thành công -->
-<div class="notify" th:if="${success}">
-    <span th:text="${success}"></span>
-</div>
-
-<!-- Bảng danh sách khách hàng -->
-<table>
+<table id = "customers">
     <thead>
     <tr>
         <th>Name</th>
@@ -48,26 +23,16 @@
     </tr>
     </thead>
     <tbody>
-    <!-- Lặp qua danh sách khách hàng -->
-    <tr th:each="customer : ${customers}">
-        <td th:text="${customer.name}">Name</td>
-        <td th:text="${customer.email}">Email</td>
-        <td th:text="${customer.address}">Address</td>
-        <td>
-            <a th:href="@{/customers/{id}/edit(id=${customer.id})}">Edit</a>
-        </td>
-        <td>
-            <a th:href="@{/customers/{id}/delete(id=${customer.id})}">Delete</a>
-        </td>
-        <td>
-            <a th:href="@{/customers/{id}/view(id=${customer.id})}">View</a>
-        </td>
-    </tr>
-    <!-- Thông báo nếu danh sách rỗng -->
-    <tr th:if="${#lists.isEmpty(customers)}">
-        <td colspan="6">No customers available.</td>
+    <tr th:each="row,rowStat : ${customers}">
+        <td th:text="${row.getName()}"></td>
+        <td th:text="${row.getEmail()}"></td>
+        <td th:text="${row.getAddress()}"></td>
+        <td><a th:href="@{/customers/{id}/edit(id=${row.getId()})}">edit</a></td>
+        <td><a th:href="@{/customers/{id}/delete(id=${row.getId()})}">delete</a></td>
+        <td><a th:href="@{/customers/{id}/view(id=${row.getId()})}">view</a></td>
     </tr>
     </tbody>
 </table>
+<footer th:replace="/layout :: footer"></footer>
 </body>
 </html>

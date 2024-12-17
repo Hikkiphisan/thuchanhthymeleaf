@@ -1,6 +1,7 @@
 package org.example.customermanagementthymeleaf.configuration;
 
 
+import org.example.customermanagementthymeleaf.service.CustomerService;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -26,7 +27,8 @@ public class AppConfiguration implements WebMvcConfigurer, ApplicationContextAwa
         this.applicationContext = applicationContext;
     }
 
-    //Thymeleaf
+
+    //// Template Resolver: Xác định vị trí các file HTML template
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
@@ -38,6 +40,8 @@ public class AppConfiguration implements WebMvcConfigurer, ApplicationContextAwa
         return templateResolver;
     }
 
+
+    // Template Engine: Xử lý template sử dụng Template Resolver
     @Bean
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -45,11 +49,18 @@ public class AppConfiguration implements WebMvcConfigurer, ApplicationContextAwa
         return templateEngine;
     }
 
+
+    // View Resolver: Liên kết Spring MVC với Thymeleaf để render view
     @Bean
     public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding("UTF-8");
         return viewResolver;
+    }
+
+    @Bean
+    public CustomerService customerService() {
+        return new CustomerService();
     }
 }

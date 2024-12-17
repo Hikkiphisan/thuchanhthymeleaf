@@ -2,7 +2,7 @@ package org.example.customermanagementthymeleaf.controller;
 
 import org.example.customermanagementthymeleaf.model.Customer;
 import org.example.customermanagementthymeleaf.service.CustomerService;
-import org.example.customermanagementthymeleaf.service.ICustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,19 +16,18 @@ import java.util.List;
 @Controller
 @RequestMapping("/customers")
 public class CustomerController {
-    private final ICustomerService customerService = new CustomerService();
 
-//    @GetMapping("/index")
-//    public String index(Model model) {
-//
-//        List<Customer> customerList = customerService.findAll();
-//        model.addAttribute("customers", customerList);
-//        return "indexh";
-//    }
+
+
+
+
+//    private final ICustomerService customerService = new CustomerService();
+   @Autowired
+   private CustomerService customerServiced;
 
     @GetMapping("/index")
     public String index(Model model) {
-        List<Customer> customerList = customerService.findAll();
+        List<Customer> customerList = customerServiced.findAll();
         if (customerList == null || customerList.isEmpty()) {
             System.out.println("Danh sách khách hàng rỗng!");
         } else {
@@ -48,38 +47,38 @@ public class CustomerController {
     @PostMapping("/save")
     public String save(Customer customer) {
         customer.setId((int) (Math.random() * 10000));
-        customerService.save(customer);
+        customerServiced.save(customer);
         return "redirect:/customers";
     }
 
     @GetMapping("/{id}/edit")
     public String update(@PathVariable int id, Model model) {
-        model.addAttribute("customer", customerService.findById(id));
+        model.addAttribute("customer", customerServiced.findById(id));
         return "/update";
     }
 
     @PostMapping("/update")
     public String update(Customer customer) {
-        customerService.update(customer.getId(), customer);
+        customerServiced.update(customer.getId(), customer);
         return "redirect:/customers";
     }
 
     @GetMapping("/{id}/delete")
     public String delete(@PathVariable int id, Model model) {
-        model.addAttribute("customer", customerService.findById(id));
+        model.addAttribute("customer", customerServiced.findById(id));
         return "/delete";
     }
 
     @PostMapping("/delete")
     public String delete(Customer customer, RedirectAttributes redirect) {
-        customerService.remove(customer.getId());
+        customerServiced.remove(customer.getId());
         redirect.addFlashAttribute("success", "Removed customer successfully!");
         return "redirect:/customers";
     }
 
     @GetMapping("/{id}/view")
     public String view(@PathVariable int id, Model model) {
-        model.addAttribute("customer", customerService.findById(id));
+        model.addAttribute("customer", customerServiced.findById(id));
         return "/view";
     }
 }
