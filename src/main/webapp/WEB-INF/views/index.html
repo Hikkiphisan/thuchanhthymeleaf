@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách khách hàng</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<h1>Danh sách khách hàng</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tên khách hàng</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Dùng Thymeleaf để lặp qua danh sách khách hàng -->
+    <tr th:each="customer : ${customers}">
+        <td th:text="${customer.id}">1</td>
+        <td th:text="${customer.name}">Nguyễn Văn A</td>
+        <td th:text="${customer.email}">nva@example.com</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
